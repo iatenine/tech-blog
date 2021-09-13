@@ -1,3 +1,7 @@
-const topRouter = require("express").Router();
+const router = require("express").Router();
 
-module.exports = topRouter;
+router.get("/", (req, res) => {
+  res.render("../views/home.hbs");
+});
+
+module.exports = router;
