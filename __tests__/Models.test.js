@@ -1,5 +1,5 @@
 const sequelize = require("../config/connection");
-const { User, Post } = require("../models");
+const { User, Post, Comment } = require("../models");
 
 describe("User", () => {
   it("should be able to handle CRUD", async () => {
@@ -36,7 +36,7 @@ describe("User", () => {
   });
 });
 
-describe("Comments", () => {
+describe("Posts", () => {
   it("should be able to handle CRUD", async () => {
     await sequelize.sync({ force: true });
     const user = await User.create({
@@ -91,6 +91,56 @@ describe("Comments", () => {
     // Delet user
     await user.destroy();
     const deletion = await User.findByPk(id);
+
+    expect(deletion).toBe(null);
+  });
+});
+
+describe("Comments", () => {
+  it("should be able to handle CRUD", async () => {
+    await sequelize.sync({ force: true });
+    const user = await User.create({
+      username: "differentName",
+      password: "tests",
+      email: "goodbye@yes.com",
+    });
+    const author_id = user.id;
+    expect(user).toBeDefined();
+
+    // CREATE POST
+    const title = "test title";
+    const body = "test body";
+
+    const post = await Post.create({
+      title: title,
+      content: body,
+      author_id: author_id,
+    });
+    const post_id = post.id;
+
+    expect(post).toBeDefined();
+    expect(post).toBeInstanceOf(Post);
+    expect(post.title).toBe(title);
+    expect(post.content).toBe(body);
+    expect(post.author_id).toBe(author_id);
+
+    // CREATE COMMENT
+    const content = "test comment";
+    const comment = await Comment.create({
+      content: "test comment",
+      author_id: author_id,
+      post_id: post_id,
+    });
+
+    expect(comment).toBeDefined();
+    expect(comment).toBeInstanceOf(Comment);
+    expect(comment.content).toBe(content);
+    expect(comment.author_id).toBe(author_id);
+    expect(comment.post_id).toBe(post_id);
+
+    // Delet user
+    await user.destroy();
+    const deletion = await User.findByPk(author_id);
 
     expect(deletion).toBe(null);
   });
