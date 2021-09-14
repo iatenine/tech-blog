@@ -32,4 +32,26 @@ async function getAllPosts() {
   });
 }
 
-module.exports = { getUserbyUsername, checkPassword, getAllPosts };
+async function getPost(id) {
+  return await Post.findOne({
+    where: { id },
+    include: [
+      {
+        model: User,
+        attributes: ["username", "id"],
+      },
+      {
+        model: Comment,
+        attributes: ["id", "content", "createdAt"],
+        include: [
+          {
+            model: User,
+            attributes: ["username", "id"],
+          },
+        ],
+      },
+    ],
+  });
+}
+
+module.exports = { getUserbyUsername, checkPassword, getAllPosts, getPost };

@@ -3,6 +3,7 @@ const {
   getUserbyUsername,
   checkPassword,
   getAllPosts,
+  getPost,
 } = require("../utils/helpers");
 const api = require("./api");
 
@@ -20,6 +21,7 @@ router.get("/", async (req, res) => {
 
 // Dashboard
 router.get("/dashboard", (req, res) => {
+  if (!req.session.loggedIn) res.redirect("/");
   res.render("../views/dashboard.hbs");
 });
 
@@ -47,6 +49,15 @@ router.get("/logout", (req, res) => {
   req.session.loggedIn = false;
   req.session.destroy(() => {
     res.redirect("/");
+  });
+});
+
+// Render a single post
+router.get("/post/:id", async (req, res) => {
+  // if (!req.session.loggedIn) res.redirect("/");
+  const post = await getPost(req.params.id);
+  res.render("../views/postEntry.hbs", {
+    post: post.dataValues,
   });
 });
 
