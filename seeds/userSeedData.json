@@ -1,16 +1,16 @@
 [
   {
-    "username": "first user",
+    "username": "firstuser",
     "password": "first password",
     "email": "hello@whatever.net"
   },
   {
-    "username": "second user",
+    "username": "seconduser",
     "password": "different password",
     "email": "n@y.p"
   },
   {
-    "username": "third user",
+    "username": "thirduser",
     "password": "third password",
     "email": "welp@hi.dev"
   }

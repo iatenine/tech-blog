@@ -12,6 +12,7 @@ User.init(
       allowNull: false,
       validate: {
         notEmpty: true,
+        isAlphanumeric: true,
       },
     },
     password: {
