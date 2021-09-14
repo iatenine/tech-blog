@@ -1,4 +1,5 @@
 const { User } = require("../models");
+const bcrypt = require("bcrypt");
 
 async function getUserbyUsername(query) {
   try {
@@ -12,4 +13,8 @@ async function getUserbyUsername(query) {
   }
 }
 
-module.exports = { getUserbyUsername };
+function checkPassword(password, hashword) {
+  return bcrypt.compareSync(password, hashword);
+}
+
+module.exports = { getUserbyUsername, checkPassword };
