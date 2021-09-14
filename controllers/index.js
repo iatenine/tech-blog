@@ -20,9 +20,16 @@ router.get("/", async (req, res) => {
 });
 
 // Dashboard
-router.get("/dashboard", (req, res) => {
+router.get("/dashboard", async (req, res) => {
   if (!req.session.loggedIn) res.redirect("/");
-  res.render("../views/dashboard.hbs");
+  // Return all posts by session user
+  const posts = await getAllPosts();
+  const userPosts = posts
+    .filter((post) => post.dataValues.author_id === req.session.userId)
+    .map((post) => post.dataValues);
+  res.render("../views/dashboard.hbs", {
+    posts: userPosts,
+  });
 });
 
 // Login

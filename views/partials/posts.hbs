@@ -1,6 +1,7 @@
 {{#each posts}}
   <div class="post container">
     <h2><a href="/post/{{this.id}}">{{this.title}}</a></h2>
+    <p>by {{this.user.dataValues.username}}</p>
     <p>{{this.content}}</p>
     <p>{{this.updatedAt}}</p>
   </div>
