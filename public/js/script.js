@@ -15,7 +15,7 @@ async function login(e) {
   });
 
   if (response.status === 200) {
-    console.log("login success");
+    window.location.href = "/";
   } else {
     console.log("login failed");
   }
