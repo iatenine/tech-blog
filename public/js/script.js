@@ -37,15 +37,35 @@ async function createPost(e) {
   else console.error("create post failed: ", response);
 }
 
+async function postComment(e) {
+  e.preventDefault();
+
+  const content = document.getElementById("comment-content-area").value;
+  const post_id = window.location.pathname.split("/")[2];
+
+  // Make a POST request to the server
+  const response = await fetch("/api/comments", {
+    method: "POST",
+    body: JSON.stringify({ content, post_id }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.status === 201) window.location.reload();
+  else console.error("create comment failed: ", response);
+}
+
+function toggleForm() {
+  if ($("#new-post-form").is(":visible"))
+    $("#make-new-post-btn").text("Make a new post");
+  else $("#make-new-post-btn").text("Hide Form");
+  $("#new-post-form").toggle();
+}
+
 $(document).ready(function () {
   // Attach event handlers to buttons
   $("#login-button").click(login);
   $("#create-post-btn").click(createPost);
   $("#new-post-form").hide();
-  $("#make-new-post-btn").click(function () {
-    if ($("#new-post-form").is(":visible"))
-      $("#make-new-post-btn").text("Make a new post");
-    else $("#make-new-post-btn").text("Hide Form");
-    $("#new-post-form").toggle();
-  });
+  $("#make-new-post-btn").click(toggleForm);
+  $("#create-comment-btn").click(postComment);
 });

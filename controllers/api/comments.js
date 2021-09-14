@@ -36,4 +36,21 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// POST /api/comment (creates a new comment)
+router.post("/", async (req, res) => {
+  if (!req.session.loggedIn) res.redirect("/");
+  try {
+    const sanitizedComment = {
+      author_id: req.session.userId,
+      content: req.body.content,
+      post_id: req.body.post_id,
+    };
+    const comment = await Comment.create(sanitizedComment);
+    res.status(201).json(comment);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;
