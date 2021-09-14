@@ -21,8 +21,24 @@ async function login(e) {
   }
 }
 
+async function createPost(e) {
+  e.preventDefault();
+  const title = document.getElementById("post-title-area").value;
+  const content = document.getElementById("post-content-area").value;
+
+  // Make a POST request to the server
+  const response = await fetch("/api/posts", {
+    method: "POST",
+    body: JSON.stringify({ title, content }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.status === 201) window.location.href = "/";
+  else console.error("create post failed: ", response);
+}
+
 $(document).ready(function () {
   // Attach event handlers to buttons
-  // prevent default behavior of buttons
   $("#login-button").click(login);
+  $("#create-post-btn").click(createPost);
 });

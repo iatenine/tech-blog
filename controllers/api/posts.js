@@ -36,4 +36,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// POST api/posts (creates a new post)
+router.post("/", async (req, res) => {
+  if (!req.session.loggedIn) res.redirect("/");
+  try {
+    console.log(req.body);
+    req.body.author_id = req.session.userId;
+    console.log(req.body);
+    const post = await Post.create(req.body);
+    if (!post) res.status(404).send("No Post Created");
+    res.status(201).json(post);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;
