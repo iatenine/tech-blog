@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Post, Comment } = require("../models");
 const bcrypt = require("bcrypt");
 
 async function getUserbyUsername(query) {
@@ -17,4 +17,19 @@ function checkPassword(password, hashword) {
   return bcrypt.compareSync(password, hashword);
 }
 
-module.exports = { getUserbyUsername, checkPassword };
+async function getAllPosts() {
+  return await Post.findAll({
+    include: [
+      {
+        model: User,
+        attributes: ["username", "id"],
+      },
+      {
+        model: Comment,
+        attributes: ["id", "content", "createdAt"],
+      },
+    ],
+  });
+}
+
+module.exports = { getUserbyUsername, checkPassword, getAllPosts };

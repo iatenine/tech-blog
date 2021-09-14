@@ -1,15 +1,26 @@
 const router = require("express").Router();
-const { getUserbyUsername, checkPassword } = require("../utils/helpers");
+const {
+  getUserbyUsername,
+  checkPassword,
+  getAllPosts,
+} = require("../utils/helpers");
 const api = require("./api");
 
 router.use("/api", api);
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const posts = await getAllPosts();
+  const postsDataValues = posts.map((post) => post.dataValues);
   const loggedIn = req.session.loggedIn ?? false;
-  console.log(loggedIn);
   res.render("../views/home.hbs", {
     loggedIn,
+    posts: postsDataValues,
   });
+});
+
+// Dashboard
+router.get("/dashboard", (req, res) => {
+  res.render("../views/dashboard.hbs");
 });
 
 // Login

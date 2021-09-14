@@ -39,7 +39,7 @@ describe("User", () => {
 describe("Posts", () => {
   it("should be able to handle CRUD", async () => {
     await sequelize.sync({ force: false });
-    const username = "different name";
+    const username = "differentName";
     const password = "tests";
     const email = "goodbye@yes.com";
     const user = await User.create({
