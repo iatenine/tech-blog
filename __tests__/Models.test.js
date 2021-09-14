@@ -3,7 +3,7 @@ const { User, Post, Comment } = require("../models");
 
 describe("User", () => {
   it("should be able to handle CRUD", async () => {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     const user = await User.create({
       username: "test",
       password: "tests",
@@ -38,11 +38,14 @@ describe("User", () => {
 
 describe("Posts", () => {
   it("should be able to handle CRUD", async () => {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
+    const username = "different name";
+    const password = "tests";
+    const email = "goodbye@yes.com";
     const user = await User.create({
-      username: "differentName",
-      password: "tests",
-      email: "goodbye@yes.com",
+      username,
+      password,
+      email,
     });
     const id = user.id;
     expect(user).toBeDefined();
@@ -75,7 +78,7 @@ describe("Posts", () => {
       ],
     });
     const author = postWithData.dataValues.user.dataValues;
-    expect(author.username).toBe("differentName");
+    expect(author.username).toBe(username);
 
     // Update post
     const newTitle = "new title";
@@ -98,7 +101,7 @@ describe("Posts", () => {
 
 describe("Comments", () => {
   it("should be able to handle CRUD", async () => {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     const user = await User.create({
       username: "differentName",
       password: "tests",
