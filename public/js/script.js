@@ -41,4 +41,11 @@ $(document).ready(function () {
   // Attach event handlers to buttons
   $("#login-button").click(login);
   $("#create-post-btn").click(createPost);
+  $("#new-post-form").hide();
+  $("#make-new-post-btn").click(function () {
+    if ($("#new-post-form").is(":visible"))
+      $("#make-new-post-btn").text("Make a new post");
+    else $("#make-new-post-btn").text("Hide Form");
+    $("#new-post-form").toggle();
+  });
 });
