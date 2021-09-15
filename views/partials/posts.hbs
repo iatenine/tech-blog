@@ -4,6 +4,12 @@
     <p>by {{this.user.dataValues.username}}</p>
     <p>{{this.content}}</p>
     <p>{{this.updatedAt}}</p>
+
+    {{! Only display if admin is true }}
+    {{#if ../admin}}
+      <a href="/post/{{this.id}}/edit" class="float-left">Edit</a>
+      <a href="/post/{{this.id}}/delete" class="float-end">Delete</a>
+    {{/if}}
   </div>
   <hr />
 {{/each}}

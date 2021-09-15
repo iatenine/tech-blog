@@ -33,7 +33,7 @@ async function createPost(e) {
     headers: { "Content-Type": "application/json" },
   });
 
-  if (response.status === 201) window.location.href = "/";
+  if (response.status === 201) window.location.reload();
   else console.error("create post failed: ", response);
 }
 
@@ -54,6 +54,34 @@ async function postComment(e) {
   else console.error("create comment failed: ", response);
 }
 
+async function registerUser(e) {
+  e.preventDefault();
+
+  const username = document.getElementById("register-username-input").value;
+  const password = document.getElementById("register-password-input").value;
+  const confirmPassword = document.getElementById("password-confirm").value;
+  const email = document.getElementById("register-email-input").value;
+
+  console.log(username, password, confirmPassword, email);
+
+  if (password !== confirmPassword) {
+    // Change background color of password input
+    $("#register-password-input").css("background-color", "red");
+    $("#password-confirm").css("background-color", "red");
+    return;
+  }
+
+  // Create a user if passwords match and it makes sense
+  const response = await fetch("/api/users", {
+    method: "POST",
+    body: JSON.stringify({ username, password, email }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.status === 201) window.location.href = "/";
+  else console.error("register user failed: ", response);
+}
+
 function toggleForm() {
   if ($("#new-post-form").is(":visible"))
     $("#make-new-post-btn").text("Make a new post");
@@ -68,4 +96,5 @@ $(document).ready(function () {
   $("#new-post-form").hide();
   $("#make-new-post-btn").click(toggleForm);
   $("#create-comment-btn").click(postComment);
+  $("#register-button").click(registerUser);
 });

@@ -21,15 +21,23 @@ router.get("/", async (req, res) => {
 
 // Dashboard
 router.get("/dashboard", async (req, res) => {
-  if (!req.session.loggedIn) res.redirect("/");
+  if (!req.session.loggedIn) res.redirect("/login");
   // Return all posts by session user
   const posts = await getAllPosts();
   const userPosts = posts
     .filter((post) => post.dataValues.author_id === req.session.userId)
     .map((post) => post.dataValues);
+  const loggedIn = req.session.loggedIn ?? false;
   res.render("../views/dashboard.hbs", {
+    loggedIn,
     posts: userPosts,
+    admin: true,
   });
+});
+
+// Login page (GET version)
+router.get("/login", (req, res) => {
+  res.render("../views/login.hbs");
 });
 
 // Login
@@ -61,7 +69,7 @@ router.get("/logout", (req, res) => {
 
 // Render a single post
 router.get("/post/:id", async (req, res) => {
-  // if (!req.session.loggedIn) res.redirect("/");
+  if (!req.session.loggedIn) res.redirect("/login");
   const post = await getPost(req.params.id);
   res.render("../views/postEntry.hbs", {
     post: post.dataValues,
