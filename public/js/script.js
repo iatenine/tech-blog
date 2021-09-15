@@ -103,6 +103,27 @@ async function deletePost(e) {
   else console.error("delete post failed: ", response);
 }
 
+// Update post
+async function updatePost(e) {
+  e.preventDefault();
+  const post_id = window.location.pathname.split("/")[2];
+
+  const title = document.getElementById("edit-post-title").value;
+  const content = document.getElementById("edit-post-content").value;
+
+  console.log("update post", post_id, title, content);
+
+  // Make a PUT request to the server
+  const response = await fetch(`/api/posts/${post_id}`, {
+    method: "PUT",
+    body: JSON.stringify({ title, content }),
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (response.status === 200) window.location.href = "/dashboard";
+  else console.error("update post failed: ", response);
+}
+
 $(document).ready(function () {
   // Attach event handlers to buttons
   $("#login-button").click(login);
@@ -112,4 +133,7 @@ $(document).ready(function () {
   $("#create-comment-btn").click(postComment);
   $("#register-button").click(registerUser);
   $(".delete-btn").click(deletePost);
+  const editPostContentBtn = $("#edit-post-content");
+  editPostContentBtn.text(editPostContentBtn.text().trim());
+  $("#update-post-btn").click(updatePost);
 });

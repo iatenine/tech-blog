@@ -52,6 +52,26 @@ router.post("/", async (req, res) => {
   }
 });
 
+// PUT api/posts/:id (Update a post)
+router.put("/:id", async (req, res) => {
+  if (!req.session.loggedIn) res.redirect("/login");
+  try {
+    const post = await Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (!post) res.status(404).send("No Post Found");
+    if (post.author_id !== req.session.userId)
+      res.status(403).send("Unauthorized");
+    const updatedPost = await post.update(req.body);
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
 // DELETE api/posts/:id (deletes a post)
 router.delete("/:id", async (req, res) => {
   if (!req.session.loggedIn) res.redirect("/login");

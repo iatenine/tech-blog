@@ -76,4 +76,13 @@ router.get("/post/:id", async (req, res) => {
   });
 });
 
+// Edit a post
+router.get("/edit/:id", async (req, res) => {
+  if (!req.session.loggedIn) res.redirect("/login");
+  const post = await getPost(req.params.id);
+  res.render("../views/edit.hbs", {
+    post: post.dataValues,
+  });
+});
+
 module.exports = router;

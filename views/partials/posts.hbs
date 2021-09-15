@@ -7,11 +7,12 @@
 
     {{! Only display if admin is true }}
     {{#if ../admin}}
-      <button 
-      class="btn btn-secondary edit-btn" 
-      data-id="{{this.id}}">
+      <a href="/edit/{{this.id}}">
+      <button
+      class="btn btn-secondary edit-btn">
         Edit
       </button>
+      </a>
       <button 
       class="btn btn-danger float-end delete-btn" 
       data-id="{{this.id}}">
