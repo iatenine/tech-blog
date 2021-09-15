@@ -7,8 +7,16 @@
 
     {{! Only display if admin is true }}
     {{#if ../admin}}
-      <a href="/post/{{this.id}}/edit" class="float-left">Edit</a>
-      <a href="/post/{{this.id}}/delete" class="float-end">Delete</a>
+      <button 
+      class="btn btn-secondary edit-btn" 
+      data-id="{{this.id}}">
+        Edit
+      </button>
+      <button 
+      class="btn btn-danger float-end delete-btn" 
+      data-id="{{this.id}}">
+        Delete
+      </button>
     {{/if}}
   </div>
   <hr />

@@ -52,4 +52,23 @@ router.post("/", async (req, res) => {
   }
 });
 
+// DELETE api/posts/:id (deletes a post)
+router.delete("/:id", async (req, res) => {
+  if (!req.session.loggedIn) res.redirect("/login");
+  try {
+    const post = await Post.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    if (post.author_id !== req.session.userId)
+      res.status(403).send("You are not authorized to delete this post");
+    if (!post) res.status(404).send("No Post Found");
+    await post.destroy();
+    res.status(204).send("Post Deleted");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
 module.exports = router;

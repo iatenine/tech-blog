@@ -89,6 +89,20 @@ function toggleForm() {
   $("#new-post-form").toggle();
 }
 
+async function deletePost(e) {
+  e.preventDefault();
+  const post_id = e.target.dataset.id;
+  console.log("delete post", e.target.dataset.id);
+
+  // Make a DELETE request to the server
+  const response = await fetch(`/api/posts/${post_id}`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 204) window.location.reload();
+  else console.error("delete post failed: ", response);
+}
+
 $(document).ready(function () {
   // Attach event handlers to buttons
   $("#login-button").click(login);
@@ -97,4 +111,5 @@ $(document).ready(function () {
   $("#make-new-post-btn").click(toggleForm);
   $("#create-comment-btn").click(postComment);
   $("#register-button").click(registerUser);
+  $(".delete-btn").click(deletePost);
 });
